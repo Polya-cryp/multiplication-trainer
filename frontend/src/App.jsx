@@ -6,7 +6,6 @@ import Result from './components/Result';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = 'http://localhost:8000';
 
 function App() {
   const [gameState, setGameState] = useState('levelSelect');
@@ -15,32 +14,19 @@ function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState('');
 
-  const startGame = async (selectedLevel) => {
-    try {
-      setError('');
-      const response = await axios.post(`${API_URL}/start`, { level: selectedLevel });
-      setQuestions(response.data);
-      setLevel(selectedLevel);
-      setCurrentQuestionIndex(0);
-      setGameState('playing');
-    } catch (error) {
-      console.error('Ошибка при запуске теста:', error);
-      setError('Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен на порту 8000!');
-    }
-  };
+  const startGame = (selectedLevel) => {
+    setLevel(selectedLevel);
+    setCurrentQuestionIndex(0);
+    setGameState('playing');
+    setError('');
+};
 
-  const handleAnswer = async (answer, callback) => {
-    try {
-      const response = await axios.post(
-        `${API_URL}/check/${currentQuestionIndex}`,
-        { 
-          answer: answer,
-          level: level,
-          question_id: currentQuestionIndex 
-        }
-      );
-      
-      callback(response.data);
+ const checkAnswer = (userAnswer, correctAnswer) => {
+    if (userAnswer === correctAnswer) {
+        return true;
+    }
+    return false;
+};
       
       setTimeout(() => {
         if (currentQuestionIndex + 1 < questions.length) {
