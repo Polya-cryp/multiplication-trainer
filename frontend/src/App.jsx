@@ -155,30 +155,36 @@ function App() {
   }
 
   // Экран результатов
-  if (showResult) {
-    const percentage = (score / questions.length) * 100;
-    return (
-      <div className="flower-container">
-        <div className="petal petal-1"></div>
-        <div className="petal petal-2"></div>
-        <div className="petal petal-3"></div>
-        <div className="petal petal-4"></div>
-        <div className="flower-icon flower-icon-1">🌱</div>
-        <div className="flower-icon flower-icon-2">🌿</div>
-        <div className="content">
-          <h1>Тренажёр</h1>
-          <h2>Ваш результат</h2>
-          <div className="result-circle">
-            <span className="result-score">{score}</span>
-            <span className="result-total">/{questions.length}</span>
-          </div>
-          <div className="percentage">{percentage.toFixed(1)}%</div>
-          <p className="result-message">{getResultMessage()}</p>
-          <button className="restart-flower-btn" onClick={restartGame}>Пройти заново</button>
+if (showResult) {
+  const percentage = (score / questions.length) * 100;
+  return (
+    <div className="flower-container">
+      <div className="petals petal-1"></div>
+      <div className="petals petal-2"></div>
+      <div className="petals petal-3"></div>
+      <div className="petals petal-4"></div>
+      <div className="content">
+        <h1>Тренажёр</h1>
+        <h2>Ваш результат</h2>
+        <div className="result-circle">
+          <span className="result-score">{score}</span>
+          <span className="result-total">/{questions.length}</span>
         </div>
+        <div className="percentage">{percentage.toFixed(1)}%</div>
+        <p className="result-message">
+          {percentage === 100 
+            ? 'Молодец! Идеальный результат!' 
+            : percentage >= 70 
+              ? 'Хорошо! Так держать!'
+              : 'Постарайся ещё!'}
+        </p>
+        <button className="restart-flower-btn" onClick={restartGame}>
+          Пройти заново
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Экран игры
   const currentQ = questions[currentQuestion];

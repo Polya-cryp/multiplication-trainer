@@ -231,27 +231,30 @@ h1 {
 
 /* Результаты */
 .result-circle {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   margin: 20px auto;
   background: #fff0f5;
   border-radius: 50%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  font-size: 42px;
-  font-weight: 500;
-  color: #cd7a9e;
+  gap: 4px;
   border: 2px solid #ffdee8;
 }
 
 .result-score {
-  font-size: 52px;
+  font-size: 48px;
+  font-weight: 500;
+  color: #cd7a9e;
+  line-height: 1;
 }
 
 .result-total {
-  font-size: 26px;
+  font-size: 28px;
+  font-weight: 400;
   color: #dfa5bd;
+  line-height: 1;
 }
 
 .percentage {
@@ -287,4 +290,109 @@ h1 {
 .restart-flower-btn:hover {
   background: #f0c0d4;
   color: #a34e72;
+}
+/* ===== АДАПТИВНОСТЬ (сохраняет ваш дизайн) ===== */
+
+/* Чтобы всё было в границах */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Главный контейнер — не больше экрана */
+.flower-container,
+.container {
+  max-width: 600px;
+  width: 95%;
+  margin: 0 auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+/* Текст вопроса — не вылезает */
+.question-flower h2,
+.question-text {
+  font-size: clamp(32px, 10vw, 56px);
+  word-break: break-word;
+  white-space: normal;
+  text-align: center;
+}
+
+/* Поле ввода и кнопка — рядом на любом экране */
+.answer-area,
+.answer-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.flower-input,
+.answer-input {
+  flex: 2;
+  min-width: 150px;
+  max-width: 100%;
+}
+
+.flower-btn,
+.check-btn {
+  flex: 1;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+/* Карточки уровней не разваливаются */
+.level-card,
+.level-btn {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.level-text,
+.level-info {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* Счётчик */
+.game-info {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Для телефонов */
+@media (max-width: 480px) {
+  .flower-container,
+  .container {
+    width: 98%;
+    padding: 20px 15px;
+  }
+
+  .answer-area,
+  .answer-section {
+    flex-direction: column;
+  }
+
+  .flower-btn,
+  .check-btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .level-card,
+  .level-btn {
+    padding: 14px;
+  }
+
+  .level-emoji {
+    font-size: 28px;
+  }
+
+  .level-name {
+    font-size: 18px;
+  }
 }
