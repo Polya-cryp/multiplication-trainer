@@ -1,136 +1,290 @@
-.container {
-  max-width: 600px;
-  margin: 0 auto;
+/* App.css - Весенняя версия */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #ffe8f0 0%, #ffd9e8 100%);
+  font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  text-align: center;
+  position: relative;
+}
+
+/* Весенние лепестки (нежные, разбросанные) */
+.flower-container {
+  position: relative;
+  background: rgba(255, 245, 250, 0.9);
+  backdrop-filter: blur(2px);
+  border-radius: 48px;
+  padding: 35px 30px;
+  max-width: 550px;
+  width: 100%;
+  box-shadow: 0 15px 35px rgba(255, 140, 170, 0.15);
+  border: 1px solid rgba(255, 200, 210, 0.6);
+  overflow: hidden;
+}
+
+/* Лепестки разлетаются по углам */
+.petal {
+  position: absolute;
+  background: #ffd0df;
+  border-radius: 80% 0 60% 40%;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.petal-1 { width: 55px; height: 45px; top: -12px; left: -15px; transform: rotate(35deg); background: #ffc8db; }
+.petal-2 { width: 65px; height: 50px; top: -8px; right: -20px; transform: rotate(130deg); background: #ffbfd4; }
+.petal-3 { width: 50px; height: 40px; bottom: -15px; left: -10px; transform: rotate(220deg); background: #ffc8db; }
+.petal-4 { width: 60px; height: 45px; bottom: -10px; right: -15px; transform: rotate(310deg); background: #ffbfd4; }
+.petal-5 { width: 40px; height: 35px; top: 30%; left: -20px; transform: rotate(75deg); background: #ffd5e2; opacity: 0.4; }
+.petal-6 { width: 45px; height: 38px; bottom: 20%; right: -18px; transform: rotate(160deg); background: #ffd5e2; opacity: 0.4; }
+
+/* Маленькие цветочки по углам */
+.flower-icon {
+  position: absolute;
+  font-size: 22px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.flower-icon-1 { top: 10px; left: 10px; transform: rotate(-10deg); }
+.flower-icon-2 { top: 8px; right: 12px; transform: rotate(5deg); }
+.flower-icon-3 { bottom: 8px; left: 12px; transform: rotate(15deg); }
+.flower-icon-4 { bottom: 10px; right: 10px; transform: rotate(-5deg); }
+
+.content {
+  position: relative;
+  z-index: 2;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
+  color: #d47a9a;
   font-size: 32px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .subtitle {
-  color: #666;
-  margin-bottom: 30px;
+  text-align: center;
+  color: #e8a0bb;
+  margin-bottom: 32px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
+/* Карточки уровней (светло-розовые) */
 .levels {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
-.level-btn {
+.level-card {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 20px;
-  border: 2px solid #e0e0e0;
-  border-radius: 15px;
-  background: white;
+  gap: 18px;
+  background: rgba(255, 240, 245, 0.9);
+  border: 1px solid #ffd4e2;
+  border-radius: 28px;
+  padding: 16px 24px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(200, 120, 140, 0.05);
+}
+
+.level-card:hover {
+  transform: translateY(-3px);
+  background: #fff5f8;
+  border-color: #f0b8ce;
+  box-shadow: 0 8px 20px rgba(240, 150, 170, 0.12);
 }
 
 .level-emoji {
-  font-size: 30px;
+  font-size: 38px;
 }
 
-.level-info {
+.level-text {
+  display: flex;
+  flex-direction: column;
   text-align: left;
 }
 
 .level-name {
-  font-size: 18px;
-  font-weight: bold;
-  display: block;
+  font-size: 20px;
+  font-weight: 500;
+  color: #b85c80;
 }
 
-.level-details {
-  font-size: 14px;
-  color: #666;
+.level-desc {
+  font-size: 13px;
+  color: #cf8aaa;
+  margin: 4px 0 2px;
 }
 
-.question-header {
+.level-sub {
+  font-size: 12px;
+  color: #dfa5bd;
+  font-style: normal;
+}
+
+/* Игровая зона */
+.game-info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  background: #fff0f5;
+  padding: 10px 20px;
+  border-radius: 40px;
+  margin-bottom: 28px;
+  font-weight: 500;
+  color: #c47a9a;
+  font-size: 14px;
 }
 
-.question-box {
-  background: #f5f5f5;
-  padding: 40px;
-  border-radius: 20px;
+.question-flower {
+  background: #fff5f8;
+  border-radius: 44px;
+  padding: 40px 20px;
+  text-align: center;
+  margin: 24px 0;
+  border: 1px solid #ffe0ea;
+}
+
+.question-flower h2 {
+  font-size: 52px;
+  color: #cd7a9e;
+  font-weight: 500;
+}
+
+.answer-area {
+  display: flex;
+  gap: 12px;
   margin: 20px 0;
 }
 
-.question-text {
-  font-size: 48px;
-  margin: 0;
-}
-
-.answer-section {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.answer-input {
+.flower-input {
   flex: 1;
-  padding: 15px;
+  padding: 14px 18px;
   font-size: 18px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
   text-align: center;
+  border: 1px solid #ffd4e2;
+  border-radius: 48px;
+  background: white;
+  color: #b55c80;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s;
 }
 
-.check-btn {
-  padding: 15px 30px;
-  background: #4CAF50;
-  color: white;
+.flower-input:focus {
+  border-color: #e8a0bb;
+  box-shadow: 0 0 0 3px rgba(232, 160, 187, 0.1);
+}
+
+.flower-btn {
+  background: #f5d0df;
   border: none;
-  border-radius: 10px;
-  cursor: pointer;
+  padding: 0 28px;
+  border-radius: 48px;
   font-size: 16px;
+  font-weight: 500;
+  color: #b85c80;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
 }
 
-.feedback-message {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 10px;
+.flower-btn:hover:not(:disabled) {
+  background: #f0c0d4;
+  color: #a34e72;
+  transform: scale(0.98);
 }
 
-.feedback-message.success {
-  background: #d4edda;
-  color: #155724;
+.flower-feedback {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 40px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
 }
 
-.feedback-message.error {
-  background: #f8d7da;
-  color: #721c24;
+.success-flower {
+  background: #e8f5e9;
+  color: #7b5a6a;
+  border: 1px solid #d4edda;
 }
 
-.score-circle {
+.error-flower {
+  background: #ffeef2;
+  color: #c46888;
+  border: 1px solid #ffe0e7;
+}
+
+/* Результаты */
+.result-circle {
   width: 120px;
   height: 120px;
   margin: 20px auto;
-  background: #4CAF50;
+  background: #fff0f5;
   border-radius: 50%;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  font-size: 32px;
-  font-weight: bold;
-  color: white;
+  font-size: 42px;
+  font-weight: 500;
+  color: #cd7a9e;
+  border: 2px solid #ffdee8;
 }
 
-.restart-btn {
-  margin-top: 20px;
-  padding: 12px 24px;
-  background: #2196F3;
-  color: white;
+.result-score {
+  font-size: 52px;
+}
+
+.result-total {
+  font-size: 26px;
+  color: #dfa5bd;
+}
+
+.percentage {
+  font-size: 24px;
+  font-weight: 500;
+  color: #d47a9a;
+  margin: 10px 0;
+}
+
+.result-message {
+  background: #fff5f8;
+  padding: 14px 20px;
+  border-radius: 32px;
+  margin: 20px 0;
+  color: #c47a9a;
+  font-size: 16px;
+}
+
+.restart-flower-btn {
+  background: #f5d0df;
   border: none;
-  border-radius: 8px;
+  padding: 12px 28px;
+  border-radius: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #b85c80;
   cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.restart-flower-btn:hover {
+  background: #f0c0d4;
+  color: #a34e72;
 }

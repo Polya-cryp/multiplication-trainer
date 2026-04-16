@@ -1,4 +1,3 @@
-// frontend/src/App.jsx
 import React, { useState } from 'react';
 import './App.css';
 
@@ -14,9 +13,9 @@ function App() {
   const [showFeedback, setShowFeedback] = useState(false);
 
   const levelSettings = {
-    1: { name: 'Легкий', questions: 5, range: [1, 10], emoji: '🔍' },
-    2: { name: 'Средний', questions: 10, range: [1, 100], emoji: '🟢' },
-    3: { name: 'Сложный', questions: 15, range: [10, 100], emoji: '🟡' }
+    1: { name: 'Лёгкий', questions: 5, range: [1, 10], desc: 'для начинающих', emoji: '🌱' },
+    2: { name: 'Средний', questions: 10, range: [1, 100], desc: 'для уверенных', emoji: '🌿' },
+    3: { name: 'Сложный', questions: 15, range: [10, 100], desc: 'для экспертов', emoji: '🌸' }
   };
 
   const generateQuestions = (selectedLevel) => {
@@ -29,9 +28,12 @@ function App() {
       if (selectedLevel === 2) {
         x1 = Math.floor(Math.random() * 9) + 1;
         x2 = Math.floor(Math.random() * 91) + 10;
+      } else if (selectedLevel === 3) {
+        x1 = Math.floor(Math.random() * 91) + 10;
+        x2 = Math.floor(Math.random() * 91) + 10;
       } else {
-        x1 = Math.floor(Math.random() * (settings.range[1] - settings.range[0] + 1)) + settings.range[0];
-        x2 = Math.floor(Math.random() * (settings.range[1] - settings.range[0] + 1)) + settings.range[0];
+        x1 = Math.floor(Math.random() * 10) + 1;
+        x2 = Math.floor(Math.random() * 10) + 1;
       }
       
       newQuestions.push({
@@ -39,8 +41,6 @@ function App() {
         x1: x1,
         x2: x2,
         correctAnswer: x1 * x2,
-        userAnswer: null,
-        isCorrect: false
       });
     }
     
@@ -53,7 +53,7 @@ function App() {
 
   const checkAnswer = () => {
     if (!userAnswer.trim()) {
-      setFeedback('❌ Введите ответ!');
+      setFeedback('Введите ответ');
       setShowFeedback(true);
       setTimeout(() => setShowFeedback(false), 1500);
       return;
@@ -61,7 +61,7 @@ function App() {
 
     const answer = parseInt(userAnswer);
     if (isNaN(answer)) {
-      setFeedback('❌ Введите число!');
+      setFeedback('Нужно ввести число');
       setShowFeedback(true);
       setTimeout(() => setShowFeedback(false), 1500);
       return;
@@ -70,27 +70,16 @@ function App() {
     const currentQ = questions[currentQuestion];
     const isCorrect = (answer === currentQ.correctAnswer);
 
-    // Обновляем вопрос
-    const updatedQuestions = [...questions];
-    updatedQuestions[currentQuestion] = {
-      ...currentQ,
-      userAnswer: answer,
-      isCorrect: isCorrect
-    };
-    setQuestions(updatedQuestions);
-
-    // Обновляем счет
     if (isCorrect) {
       setScore(score + 1);
-      setFeedback('✅ Верно! Молодец!');
+      setFeedback('Верно! Молодец!');
     } else {
-      setFeedback(`❌ Неверно! Правильный ответ: ${currentQ.correctAnswer}`);
+      setFeedback(`Неверно! Правильный ответ: ${currentQ.correctAnswer}`);
     }
 
     setShowFeedback(true);
     setUserAnswer('');
 
-    // Переход к следующему вопросу
     setTimeout(() => {
       setShowFeedback(false);
       if (currentQuestion + 1 < questions.length) {
@@ -104,11 +93,11 @@ function App() {
 
   const getResultMessage = () => {
     const percentage = (score / questions.length) * 100;
-    if (percentage === 100) return '🏆 Молодец!!! Идеальный результат!';
-    if (percentage >= 70) return '👍 Хорошо! Так держать!';
-    if (percentage >= 50) return '📚 Постарайся еще немного';
-    if (percentage >= 30) return '💪 Старайся улучшить результат';
-    return '✨ После многочисленных тренировок у тебя все получится!';
+    if (percentage === 100) return 'Молодец! Идеальный результат!';
+    if (percentage >= 70) return 'Хорошо! Так держать!';
+    if (percentage >= 50) return 'Постарайся ещё немного';
+    if (percentage >= 30) return 'Старайся улучшить результат';
+    return 'После тренировок у тебя всё получится!';
   };
 
   const restartGame = () => {
@@ -122,31 +111,44 @@ function App() {
     setUserAnswer('');
   };
 
-  // Экран выбора уровня (ВАШ ДИЗАЙН)
+  // Экран выбора уровня
   if (!gameStarted && !showResult) {
     return (
-      <div className="container">
-        <h1>Тренажёр</h1>
-        <p className="subtitle">Выберите уровень сложности 🎓</p>
-        <div className="levels">
-          {[1, 2, 3].map((lvl) => (
-            <button 
-              key={lvl} 
-              className={`level-btn level-${lvl}`} 
-              onClick={() => {
-                setLevel(lvl);
-                generateQuestions(lvl);
-              }}
-            >
-              <span className="level-emoji">{levelSettings[lvl].emoji}</span>
-              <div className="level-info">
-                <span className="level-name">{levelSettings[lvl].name}</span>
-                <span className="level-details">
-                  {levelSettings[lvl].questions} вопросов • числа {levelSettings[lvl].range[0]}–{levelSettings[lvl].range[1]}
-                </span>
-              </div>
-            </button>
-          ))}
+      <div className="flower-container">
+        <div className="petal petal-1"></div>
+        <div className="petal petal-2"></div>
+        <div className="petal petal-3"></div>
+        <div className="petal petal-4"></div>
+        <div className="petal petal-5"></div>
+        <div className="petal petal-6"></div>
+        <div className="flower-icon flower-icon-1">🌱</div>
+        <div className="flower-icon flower-icon-2">🌿</div>
+        <div className="flower-icon flower-icon-3">🌸</div>
+        <div className="flower-icon flower-icon-4">🌼</div>
+        <div className="content">
+          <h1>Тренажёр</h1>
+          <p className="subtitle">Выберите уровень сложности</p>
+          <div className="levels">
+            {[1, 2, 3].map((lvl) => (
+              <button 
+                key={lvl} 
+                className={`level-card level-${lvl}`} 
+                onClick={() => {
+                  setLevel(lvl);
+                  generateQuestions(lvl);
+                }}
+              >
+                <span className="level-emoji">{levelSettings[lvl].emoji}</span>
+                <div className="level-text">
+                  <span className="level-name">{levelSettings[lvl].name}</span>
+                  <span className="level-desc">
+                    {levelSettings[lvl].questions} вопросов • числа {levelSettings[lvl].range[0]}–{levelSettings[lvl].range[1]}
+                  </span>
+                  <span className="level-sub">{levelSettings[lvl].desc}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -156,53 +158,68 @@ function App() {
   if (showResult) {
     const percentage = (score / questions.length) * 100;
     return (
-      <div className="container result-container">
-        <h1>Тренажёр</h1>
-        <h2>📊 Ваш результат</h2>
-        <div className="score-circle">
-          <span className="score-number">{score}</span>
-          <span className="score-total">/{questions.length}</span>
+      <div className="flower-container">
+        <div className="petal petal-1"></div>
+        <div className="petal petal-2"></div>
+        <div className="petal petal-3"></div>
+        <div className="petal petal-4"></div>
+        <div className="flower-icon flower-icon-1">🌱</div>
+        <div className="flower-icon flower-icon-2">🌿</div>
+        <div className="content">
+          <h1>Тренажёр</h1>
+          <h2>Ваш результат</h2>
+          <div className="result-circle">
+            <span className="result-score">{score}</span>
+            <span className="result-total">/{questions.length}</span>
+          </div>
+          <div className="percentage">{percentage.toFixed(1)}%</div>
+          <p className="result-message">{getResultMessage()}</p>
+          <button className="restart-flower-btn" onClick={restartGame}>Пройти заново</button>
         </div>
-        <div className="percentage">{percentage.toFixed(1)}%</div>
-        <p className="result-message">{getResultMessage()}</p>
-        <button className="restart-btn" onClick={restartGame}>🔄 Пройти заново</button>
       </div>
     );
   }
 
-  // Экран игры (ВАШ ДИЗАЙН)
+  // Экран игры
   const currentQ = questions[currentQuestion];
   return (
-    <div className="container game-container">
-      <h1>Тренажёр</h1>
-      <div className="question-header">
-        <span className="question-counter">Вопрос {currentQuestion + 1} из {questions.length}</span>
-        <span className="score-display">⭐ {score}/{questions.length}</span>
-      </div>
-      <div className="question-box">
-        <h2 className="question-text">
-          {currentQ.x1} × {currentQ.x2}
-        </h2>
-      </div>
-      <div className="answer-section">
-        <input
-          type="text"
-          className="answer-input"
-          value={userAnswer}
-          onChange={(e) => setUserAnswer(e.target.value)}
-          placeholder="Введите ответ"
-          disabled={showFeedback}
-          onKeyPress={(e) => e.key === 'Enter' && checkAnswer()}
-        />
-        <button className="check-btn" onClick={checkAnswer} disabled={showFeedback}>
-          ПРОВЕРИТЬ
-        </button>
-      </div>
-      {showFeedback && (
-        <div className={`feedback-message ${feedback.includes('Верно') ? 'success' : 'error'}`}>
-          {feedback}
+    <div className="flower-container">
+      <div className="petal petal-1"></div>
+      <div className="petal petal-2"></div>
+      <div className="petal petal-3"></div>
+      <div className="petal petal-4"></div>
+      <div className="flower-icon flower-icon-1">🌱</div>
+      <div className="flower-icon flower-icon-2">🌿</div>
+      <div className="flower-icon flower-icon-3">🌸</div>
+      <div className="content">
+        <h1>Тренажёр</h1>
+        <div className="game-info">
+          <span className="question-count">Вопрос {currentQuestion + 1} из {questions.length}</span>
+          <span className="game-score">{score}/{questions.length}</span>
         </div>
-      )}
+        <div className="question-flower">
+          <h2>{currentQ.x1} × {currentQ.x2}</h2>
+        </div>
+        <div className="answer-area">
+          <input
+            type="text"
+            className="flower-input"
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
+            placeholder="Введите ответ"
+            disabled={showFeedback}
+            onKeyPress={(e) => e.key === 'Enter' && checkAnswer()}
+          />
+          <button className="flower-btn" onClick={checkAnswer} disabled={showFeedback}>
+            Проверить
+          </button>
+        </div>
+        {showFeedback && (
+          <div className={`flower-feedback ${feedback.includes('Верно') ? 'success-flower' : 'error-flower'}`}>
+            {feedback}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
