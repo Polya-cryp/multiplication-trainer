@@ -3,51 +3,102 @@ import React, { useState } from 'react';
 import LevelSelector from './components/LevelSelector';
 import Question from './components/Question';
 import Result from './components/Result';
-import axios from 'axios';
 import './App.css';
 
-
 function App() {
+  // Состояния
   const [gameState, setGameState] = useState('levelSelect');
   const [level, setLevel] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState('');
+  const [score, setScore] = useState(0);
 
-  const startGame = (selectedLevel) => {
-    setLevel(selectedLevel);
-    setCurrentQuestionIndex(0);
-    setGameState('playing');
-    setError('');
-};
-
- const checkAnswer = (userAnswer, correctAnswer) => {
+  // Функция проверки ответа
+  const checkAnswer = (userAnswer, correctAnswer) => {
     if (userAnswer === correctAnswer) {
-        return true;
+      setScore(score + 1);
+      return true;
     }
     return false;
-};
+  };
+
+  // Функция старта игры
+  const startGame = async (selectedLevel) => {
+    setLevel(selectedLevel);
+    setGameState('loading');
+    
+    try {
+      // Генерация вопросов в зависимости от уровня
+      const newQuestions = [];
+      const count = selectedLevel === 1 ? 5 : selectedLevel === 2 ? 10 : 15;
       
-      setTimeout(() => {
-        if (currentQuestionIndex + 1 < questions.length) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
+      for (let i = 0; i < count; i++) {
+        let x1, x2;
+        if (selectedLevel === 1) {
+          x1 = Math.floor(Math.random() * 10) + 1;
+          x2 = Math.floor(Math.random() * 10) + 1;
+        } else if (selectedLevel === 2) {
+          x1 = Math.floor(Math.random() * 9) + 1;
+          x2 = Math.floor(Math.random() * 91) + 10;
         } else {
-          setGameState('result');
+          x1 = Math.floor(Math.random() * 91) + 10;
+          x2 = Math.floor(Math.random() * 91) + 10;
         }
-      }, 1500);
+        
+        newQuestions.push({
+          text: `${x1} × ${x2}`,
+          correctAnswer: x1 * x2,
+          userAnswer: null
+        });
+      }
       
-    } catch (error) {
-      console.error('Ошибка при проверке ответа:', error);
-      setError('Ошибка при проверке ответа');
+      setQuestions(newQuestions);
+      setCurrentQuestionIndex(0);
+      setScore(0);
+      setGameState('playing');
+    } catch (err) {
+      setError('Ошибка при генерации вопросов');
+      setGameState('levelSelect');
     }
   };
 
+  // Функция обработки ответа
+  const handleAnswer = (answer) => {
+    const currentQuestion = questions[currentQuestionIndex];
+    const isCorrect = (answer === currentQuestion.correctAnswer);
+    
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+    
+    // Обновляем вопрос с ответом пользователя
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentQuestionIndex] = {
+      ...currentQuestion,
+      userAnswer: answer,
+      isCorrect: isCorrect
+    };
+    setQuestions(updatedQuestions);
+    
+    // Переход к следующему вопросу
+    setTimeout(() => {
+      if (currentQuestionIndex + 1 < questions.length) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        setGameState('result');
+      }
+    }, 1000);
+  };
+
+  // Перезапуск игры
   const restartGame = () => {
     setGameState('levelSelect');
     setLevel(null);
     setQuestions([]);
     setCurrentQuestionIndex(0);
     setError('');
+    setScore(0);
   };
 
   return (
@@ -71,6 +122,10 @@ function App() {
           <LevelSelector onSelectLevel={startGame} />
         )}
         
+        {gameState === 'loading' && (
+          <div className="loading">Загрузка вопросов... 🌸</div>
+        )}
+        
         {gameState === 'playing' && questions.length > 0 && (
           <Question 
             question={questions[currentQuestionIndex]}
@@ -81,7 +136,11 @@ function App() {
         )}
         
         {gameState === 'result' && (
-          <Result onRestart={restartGame} />
+          <Result 
+            questions={questions}
+            score={score}
+            onRestart={restartGame}
+          />
         )}
       </main>
       
